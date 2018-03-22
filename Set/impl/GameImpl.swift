@@ -71,12 +71,13 @@ public class GameImpl: Game {
         if (at < 0 || at >= dealtCards.count) {
             return
         }
-        let card: Card? = dealtCards[at]
+        if let card = dealtCards[at]{
 
         if (selectedCards.count == 3) {
             isAMatchOrNot(card: card)
         } else if (selectedCards.count < 3) {
             selectOrDeselect(card)
+            }
         }
     }
 
