@@ -4,15 +4,24 @@ class ViewController: UIViewController {
     var game: Game = GameImpl(matcher: Positivematcher())
     let renderer: CardRenderer = CardRendererImpl()
 
-    @IBOutlet weak var gridView: GridView!
+    @IBOutlet weak var gameView: GameView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        for index in 0..<30 {
-            let label = UILabel()
-            label.text = "label \(index)"
-            gridView.addSubview(label)
-        }
+        let card = Card(number: 1, shape: Shape.THIRD, color: Color.SECOND, shading: Shading.FIRST)
+        gameView.addcCard(card: card)
+        gameView.addcCard(card: card)
+        gameView.addcCard(card: card)
+        gameView.addcCard(card: card)
+        gameView.addcCard(card: card)
+        gameView.addcCard(card: card)
+        gameView.addcCard(card: card)
+        gameView.addcCard(card: card)
+        gameView.addcCard(card: card)
+        gameView.addcCard(card: card)
+        gameView.addcCard(card: card)
+        gameView.addcCard(card: card)
+
     }
 }
 
