@@ -5,8 +5,8 @@ class CardView: UIView {
     private let SMALL_INSET = CGFloat(2)
     private let MEDIUM_INSET = CGFloat(5)
     private let BIG_INSET = CGFloat(10)
-    var card: Card? = nil
-    public var isFaceUp = true
+    private var card: Card? = nil
+    public var isFaceUp = false
 
     init(card: Card) {
         super.init(frame: CGRect.zero)

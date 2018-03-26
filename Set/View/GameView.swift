@@ -3,7 +3,13 @@ import UIKit
 
 class GameView: UIView {
 
-    var cards: [Card] = [] {
+    var dealtCards: [Card] = [] {
+        didSet {
+            redraw()
+        }
+    }
+
+    var selectedtCards: [Card] = [] {
         didSet {
             redraw()
         }
@@ -41,8 +47,12 @@ class GameView: UIView {
                 view.removeFromSuperview()
             }
         }
-        for card in cards {
-            grid?.addSubview(CardView(card: card))
+        for card in dealtCards {
+            let cardView: CardView = CardView(card: card)
+            if (selectedtCards.contains(card)) {
+                cardView.isFaceUp = true
+            }
+            grid?.addSubview(cardView)
         }
     }
 }
