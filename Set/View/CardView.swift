@@ -43,21 +43,45 @@ class CardView: UIView {
 
     private func drawShapeInRec(_ rect: CGRect) {
         let shape = getShape(rect)
-        colorShape()
-        fillShape(shape)
+        let color = getColor()
+        colorShape(shape, color)
+    }
+
+    private func colorShape(_ shape: UIBezierPath, _ color: UIColor) {
+        if let shading = card?.shading {
+            switch (shading) {
+            case Shading.FIRST:
+                color.setFill()
+                shape.fill()
+            case Shading.SECOND:
+                color.setStroke()
+                shape.stroke()
+            case Shading.THIRD:
+                color.setStroke()
+                shape.stroke()
+            }
+        }
     }
 
     private func getShape(_ rect: CGRect) -> UIBezierPath {
-        if (card?.shape == Shape.FIRST) {
-            return getDiamond(rect)
+        if let shape = card?.shape {
+            switch (shape) {
+            case Shape.FIRST: return getDiamond(rect)
+            case Shape.SECOND: return getRect(rect)
+            case Shape.THIRD:return getCircle(rect)
+            }
         }
-        if (card?.shape == Shape.SECOND) {
-            return getDiamond(rect)
-        }
-        if (card?.shape == Shape.THIRD) {
-            return getDiamond(rect)
-        }
-        fatalError("Invalid shape")
+        fatalError("Shape cannot be null")
+    }
+
+    private func getCircle(_ rect: CGRect) -> UIBezierPath {
+        let x: CGFloat = rect.minX + ((rect.width - rect.height) / 2)
+        var square: CGRect = CGRect(x: x, y: rect.minY, width: rect.height, height: rect.height)
+        return UIBezierPath(ovalIn: square)
+    }
+
+    private func getRect(_ rect: CGRect) -> UIBezierPath {
+        return UIBezierPath(roundedRect: rect, cornerRadius: BIG_INSET)
     }
 
     private func getDiamond(_ rect: CGRect) -> UIBezierPath {
@@ -73,12 +97,15 @@ class CardView: UIView {
         return path
     }
 
-    private func fillShape(_ shape: UIBezierPath) {
-        shape.fill()
-    }
-
-    private func colorShape() {
-        UIColor.red.setFill()
+    private func getColor() -> UIColor {
+        if let color = card?.color {
+            switch (color) {
+            case Color.FIRST: return UIColor.red
+            case Color.SECOND: return UIColor.blue
+            case Color.THIRD: return UIColor.green
+            }
+        }
+        fatalError("Shape cannot be null")
     }
 
     private func getRecs() -> [CGRect] {
@@ -111,7 +138,7 @@ class CardView: UIView {
     private func addInsets(_ rects: [CGRect]) -> [CGRect] {
         var result: [CGRect] = []
         for rect in rects {
-            result.append(rect.insetBy(dx: SMALL_INSET, dy: SMALL_INSET))
+            result.append(rect.insetBy(dx: MEDIUM_INSET, dy: MEDIUM_INSET))
         }
         return result
     }
@@ -131,4 +158,5 @@ class CardView: UIView {
     private func getFrameWithInset(rect: CGRect) -> CGRect {
         return rect.insetBy(dx: BIG_INSET, dy: BIG_INSET)
     }
+
 }
