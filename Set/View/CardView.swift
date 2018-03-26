@@ -1,8 +1,3 @@
-//
-// Created by Maurizio Pietrantuono on 23/03/2018.
-// Copyright (c) 2018 Maurizio Pietrantuono. All rights reserved.
-//
-
 import Foundation
 import UIKit
 
@@ -26,6 +21,7 @@ class CardView: UIView {
         if (isFaceUp) {
             drawFace(rect: rect)
         } else {
+            drawBack(rect)
         }
     }
 
@@ -44,10 +40,10 @@ class CardView: UIView {
     private func drawShapeInRec(_ rect: CGRect) {
         let shape = getShape(rect)
         let color = getColor()
-        colorShape(shape, color)
+        colorShape(shape, color, rect)
     }
 
-    private func colorShape(_ shape: UIBezierPath, _ color: UIColor) {
+    private func colorShape(_ shape: UIBezierPath, _ color: UIColor, _ rect: CGRect) {
         if let shading = card?.shading {
             switch (shading) {
             case Shading.FIRST:
@@ -59,8 +55,24 @@ class CardView: UIView {
             case Shading.THIRD:
                 color.setStroke()
                 shape.stroke()
+                stripes(shape, color, rect)
             }
         }
+    }
+
+    private func stripes(_ shape: UIBezierPath, _ color: UIColor, _ rect: CGRect) {
+        UIGraphicsGetCurrentContext()?.saveGState()
+        shape.addClip()
+        for stride in stride(from: 0, to: rect.maxX, by: CGFloat(5)) {
+            let line = UIBezierPath()
+            let start = CGPoint(x: rect.minX + stride, y: rect.minY)
+            line.move(to: start)
+            let end = CGPoint(x: rect.minX + stride, y: rect.maxY)
+            line.addLine(to: end)
+            color.setStroke()
+            line.stroke()
+        }
+        UIGraphicsGetCurrentContext()?.restoreGState()
     }
 
     private func getShape(_ rect: CGRect) -> UIBezierPath {
@@ -76,7 +88,7 @@ class CardView: UIView {
 
     private func getCircle(_ rect: CGRect) -> UIBezierPath {
         let x: CGFloat = rect.minX + ((rect.width - rect.height) / 2)
-        var square: CGRect = CGRect(x: x, y: rect.minY, width: rect.height, height: rect.height)
+        let square: CGRect = CGRect(x: x, y: rect.minY, width: rect.height, height: rect.height)
         return UIBezierPath(ovalIn: square)
     }
 
@@ -149,9 +161,20 @@ class CardView: UIView {
     }
 
     private func drawWhitebackGroud(rect: CGRect) {
+        let cardbackGround = drawCard(rect: rect)
+        UIColor.white.setFill()
+        cardbackGround.fill()
+    }
+
+    private func drawCard(rect: CGRect) -> UIBezierPath {
         var inset = getFrameWithInset(rect: rect)
         let cardbackGround = UIBezierPath(roundedRect: inset, cornerRadius: MEDIUM_INSET)
-        UIColor.white.setFill()
+        return cardbackGround
+    }
+
+    private func drawBack(_ rect: CGRect) {
+        let cardbackGround = drawCard(rect: rect)
+        UIColor.orange.setFill()
         cardbackGround.fill()
     }
 

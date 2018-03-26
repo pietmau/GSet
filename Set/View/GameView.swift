@@ -3,7 +3,7 @@ import UIKit
 
 class GameView: UIView {
 
-    private var cards: [Card] = [] {
+    var cards: [Card] = [] {
         didSet {
             redraw()
         }
@@ -13,11 +13,6 @@ class GameView: UIView {
         get {
             return subviews[0] as? GridView
         }
-    }
-
-    func addcCard(card: Card) {
-        cards.append(card)
-        grid?.addSubview(CardView(card:card))
     }
 
     override init(frame: CGRect) {
