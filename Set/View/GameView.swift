@@ -3,6 +3,12 @@ import UIKit
 
 class GameView: UIView {
 
+    var callBack: GridViewCallback? = nil {
+        didSet {
+            grid?.callback = callBack
+        }
+    }
+
     var dealtCards: [Card] = [] {
         didSet {
             redraw()

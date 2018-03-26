@@ -3,6 +3,7 @@ import UIKit
 
 class GridView: UIView {
     private var grid: Grid? = nil
+    var callback: GridViewCallback? = nil
 
     public var ratio: CGFloat = STANDARD_RATIO {
         didSet {
@@ -42,7 +43,25 @@ class GridView: UIView {
         grid = Grid(layout: Grid.Layout.aspectRatio(ratio), frame: bounds)
         grid?.cellCount = subviews.count
     }
+
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let touch = touches.first as? UITouch {
+            let location = touch.location(in: self)
+            if let grid = grid {
+                for index in 0..<(grid.cellCount) {
+                    if (grid[index]?.contains(location) == true) {
+                        callback?.onCardClicekd(index: index)
+                    }
+                }
+            }
+        }
+    }
 }
+
+protocol GridViewCallback {
+    func onCardClicekd(index: Int)
+}
+
 
 extension GridView {
 
