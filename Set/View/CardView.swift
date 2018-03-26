@@ -18,10 +18,7 @@ class CardView: UIView {
     }
 
     override func draw(_ rect: CGRect) {
-        drawFace(rect: rect)
-    }
-
-    private func drawFace(rect: CGRect) {
+        backgroundColor = UIColor.yellow
         drawBackground(rect: rect)
         drawSymbols()
     }

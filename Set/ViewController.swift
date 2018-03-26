@@ -5,6 +5,13 @@ class ViewController: UIViewController, GridViewCallback {
 
     @IBOutlet weak var gameView: GameView!
 
+    @IBOutlet weak var dealButton: UIButton!
+
+    @IBAction func onDealClicked(_ sender: Any) {
+        game.deal()
+        updateView()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         gameView.callBack = self
@@ -14,6 +21,11 @@ class ViewController: UIViewController, GridViewCallback {
     private func updateView() {
         gameView.dealtCards = game.dealtCards
         gameView.selectedtCards = game.selectedCards
+        if (game.canDeal) {
+            dealButton.isEnabled = true
+        } else {
+            dealButton.isEnabled = false
+        }
     }
 
     func onCardClicked(index: Int) {
