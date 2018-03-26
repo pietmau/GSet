@@ -50,7 +50,7 @@ class GridView: UIView {
             if let grid = grid {
                 for index in 0..<(grid.cellCount) {
                     if (grid[index]?.contains(location) == true) {
-                        callback?.onCardClicekd(index: index)
+                        callback?.onCardClicked(index: index)
                     }
                 }
             }
@@ -59,7 +59,7 @@ class GridView: UIView {
 }
 
 protocol GridViewCallback {
-    func onCardClicekd(index: Int)
+    func onCardClicked(index: Int)
 }
 
 

@@ -56,7 +56,7 @@ class GameView: UIView {
         for card in dealtCards {
             let cardView: CardView = CardView(card: card)
             if (selectedtCards.contains(card)) {
-                cardView.isFaceUp = true
+                cardView.isSelected = true
             }
             grid?.addSubview(cardView)
         }

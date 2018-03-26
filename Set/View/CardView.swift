@@ -6,7 +6,7 @@ class CardView: UIView {
     private let MEDIUM_INSET = CGFloat(5)
     private let BIG_INSET = CGFloat(10)
     private var card: Card? = nil
-    public var isFaceUp = false
+    var isSelected = false
 
     init(card: Card) {
         super.init(frame: CGRect.zero)
@@ -18,15 +18,11 @@ class CardView: UIView {
     }
 
     override func draw(_ rect: CGRect) {
-        if (isFaceUp) {
-            drawFace(rect: rect)
-        } else {
-            drawBack(rect)
-        }
+        drawFace(rect: rect)
     }
 
     private func drawFace(rect: CGRect) {
-        drawWhitebackGroud(rect: rect)
+        drawBackground(rect: rect)
         drawSymbols()
     }
 
@@ -160,9 +156,10 @@ class CardView: UIView {
         return rects
     }
 
-    private func drawWhitebackGroud(rect: CGRect) {
+    private func drawBackground(rect: CGRect) {
         let cardbackGround = drawCard(rect: rect)
-        UIColor.white.setFill()
+        let color = isSelected ? UIColor.yellow : UIColor.white
+        color.setFill()
         cardbackGround.fill()
     }
 
@@ -170,12 +167,6 @@ class CardView: UIView {
         var inset = getFrameWithInset(rect: rect)
         let cardbackGround = UIBezierPath(roundedRect: inset, cornerRadius: MEDIUM_INSET)
         return cardbackGround
-    }
-
-    private func drawBack(_ rect: CGRect) {
-        let cardbackGround = drawCard(rect: rect)
-        UIColor.orange.setFill()
-        cardbackGround.fill()
     }
 
     private func getFrameWithInset(rect: CGRect) -> CGRect {

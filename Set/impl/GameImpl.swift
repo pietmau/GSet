@@ -1,7 +1,7 @@
 import Foundation
 
 public class GameImpl: Game {
-    public var dealtCards: [Card?] = []
+    public var dealtCards: [Card] = []
     public var selectedCards: [Card] = []
     public var remainingCards: [Card] = []
     public var matchedCards: [Card] = []
@@ -33,7 +33,7 @@ public class GameImpl: Game {
                     return
                 }
                 let currentcard = dealtCards[index]
-                if ((currentcard == nil) || (matchedCards.contains(currentcard!))) {
+                if ((currentcard == nil) || (matchedCards.contains(currentcard))) {
                     dealtCards[index] = toBeDealt.removeFirst()
                 }
             }
@@ -41,13 +41,13 @@ public class GameImpl: Game {
         }
     }
 
-    private func getThreeCards() -> [Card?]? {
-        var result: [Card?] = [nil, nil, nil]
+    private func getThreeCards() -> [Card]? {
+        var result: [Card] = []
         if (canDeal) {
-            for i in 0...2 {
+            for _ in 0...2 {
                 let rand = Int(arc4random_uniform(UInt32(remainingCards.count)))
                 let card = remainingCards.remove(at: rand)
-                result[i] = card
+                result.append(card)
             }
         }
         return result
@@ -71,14 +71,14 @@ public class GameImpl: Game {
         if (at < 0 || at >= dealtCards.count) {
             return
         }
-        if let card = dealtCards[at]{
+        let card = dealtCards[at]
 
         if (selectedCards.count == 3) {
             isAMatchOrNot(card: card)
         } else if (selectedCards.count < 3) {
             selectOrDeselect(card)
-            }
         }
+
     }
 
     private func isAMatchOrNot(card: Card) {
