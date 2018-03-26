@@ -1,7 +1,7 @@
 import UIKit
 
 class ViewController: UIViewController, GridViewCallback {
-    var game: Game = GameImpl(matcher: MatcherImpl())
+    var game: Game = GameImpl(matcher: Positivematcher())
 
     @IBOutlet weak var gameView: GameView!
 

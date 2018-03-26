@@ -27,21 +27,20 @@ public class GameImpl: Game {
     }
 
     private func dealInternal() {
-        if var toBeDealt = getThreeCards() {
-            for index in dealtCards.indices {
-                if (toBeDealt.isEmpty) {
-                    return
-                }
-                let currentcard = dealtCards[index]
-                if ((currentcard == nil) || (matchedCards.contains(currentcard))) {
-                    dealtCards[index] = toBeDealt.removeFirst()
-                }
+        var toBeDealt = getThreeCards()
+        for index in dealtCards.indices {
+            if (toBeDealt.isEmpty) {
+                return
             }
-            dealtCards.append(contentsOf: toBeDealt)
+            let currentcard = dealtCards[index]
+            if ((matchedCards.contains(currentcard))) {
+                dealtCards[index] = toBeDealt.removeFirst()
+            }
         }
+        dealtCards.append(contentsOf: toBeDealt)
     }
 
-    private func getThreeCards() -> [Card]? {
+    private func getThreeCards() -> [Card] {
         var result: [Card] = []
         if (canDeal) {
             for _ in 0...2 {
@@ -60,7 +59,20 @@ public class GameImpl: Game {
     private func onIsAMatch(card: Card) {
         matchedCards.append(contentsOf: selectedCards)
         onIsNotAMatch(card: card)
-        dealInternal()
+        if (canDeal) {
+            dealInternal()
+        } else {
+            removeMatched()
+        }
+    }
+
+    private func removeMatched() {
+        for card in dealtCards {
+            if matchedCards.contains(card) {
+                let index = dealtCards.index(of: card)!
+                dealtCards.remove(at: index)
+            }
+        }
     }
 
     private func isAMatch() -> Bool {
@@ -72,7 +84,6 @@ public class GameImpl: Game {
             return
         }
         let card = dealtCards[at]
-
         if (selectedCards.count == 3) {
             isAMatchOrNot(card: card)
         } else if (selectedCards.count < 3) {
